@@ -68,4 +68,13 @@ public:
         }
         cout << endl;
     }
+    bool isEmpty()
+    {
+        if(front == NULL)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
 };

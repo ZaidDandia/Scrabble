@@ -7,11 +7,17 @@ using namespace std;
 #include "Tries.h"
 #include "LinkedList.h"
 #include "Queue.h"
-bool searchWord(Trie t, char arr[15][15])
+#include "Stack.h"
+
+struct Coordinates
+{
+    int Row;
+    int Column;
+};
+bool searchWord(Trie t, char arr[15][15], Trie C)
 {
     bool found = false;
-    ofstream fOut;
-    fOut.open("result.txt");
+    bool already = false;
     t.initialise();
 
     // horizontal right
@@ -22,12 +28,50 @@ bool searchWord(Trie t, char arr[15][15])
             string temp = "";
             for (int k = j; k < 15; k++)
             {
-                temp += arr[i][k];
+                if (arr[i][k] != ' ')
+                    temp += arr[i][k];
+                else
+                {
+                    continue;
+                }
                 if (t.searchString(temp))
                 {
-                    found = true;
-                    fOut << temp << " (" << i + 1 << " , " << j + 1 << ") "
-                         << "(" << i + 1 << " , " << k + 1 << ") " << endl;
+                    if (!C.searchString(temp))
+                    {
+                        C.Insert(temp);
+                        found = true;
+                    }
+                    else
+                    {
+                        already = true;
+                    }
+                }
+            }
+        }
+    }
+    for (int j = 0; j < 15; j++)
+    {
+        for (int i = 0; i < 15; i++)
+        {
+            string temp = "";
+            for (int k = i; k < 15; k++)
+            {
+                if (arr[k][j] != ' ')
+                    temp += arr[k][j];
+                else
+                {
+                    continue;
+                }
+                if (t.searchString(temp))
+                {
+                    if (!C.searchString(temp))
+                    {
+                        found = true;
+                    }
+                    else
+                    {
+                        already = true;
+                    }
                 }
             }
         }
@@ -38,6 +82,7 @@ int main()
 {
     Trie t;
     t.initialise();
+    Trie CompletedWords;
     Queue<char> Inventory;
     char array[101] = {'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'B', 'B', 'C', 'C', 'D', 'D', 'D', 'D', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'F', 'F', 'F', 'G', 'G', 'G', 'H', 'H', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'J', 'K', 'L', 'L', 'L', 'L', 'M', 'M', 'N', 'N', 'N', 'N', 'N', 'N', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'P', 'P', 'Q', 'Q', 'R', 'R', 'R', 'R', 'R', 'R', 'S', 'S', 'S', 'S', 'T', 'T', 'T', 'T', 'T', 'T', 'U', 'U', 'U', 'U', 'V', 'V', 'W', 'W', 'X', 'Y', 'Y', 'Z', 'Z'};
     int Points[26] = {1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10};
@@ -83,6 +128,7 @@ int main()
             Inventory.deQueue();
         }
     }
+
     for (int i = 0; i < players; i++)
     {
         if (i + 1 != position)
@@ -113,17 +159,19 @@ int main()
         l.Insert(CurrentTurn);
         cout << "Player " << CurrentTurn << " turn: " << endl;
         cout << "Your Word Inventory: ";
-        Words[CurrentTurn].Display();
+        Words[CurrentTurn - 1].Display();
         int row, column;
         char c;
+        Stack<Coordinates> Stored;
         while (1)
-        {   
+        {
             cout << "Enter row: ";
             cin >> row;
             cout << "Enter Column: ";
             cin >> column;
             cin >> c;
-            while (Board[row-1][column-1] != ' ')
+
+            while (Board[row - 1][column - 1] != ' ')
             {
                 cout << "Already Full. Try again" << endl;
                 cout << "Enter row: ";
@@ -133,49 +181,64 @@ int main()
                 cout << "Enter the Letter: ";
                 cin >> c;
             }
-            while (!Words[CurrentTurn].search(c))
+            while (!Words[CurrentTurn - 1].search(c))
             {
                 cout << "Letter not in your inventory! Please try again." << endl;
                 cout << "Enter the Letter : " << endl;
                 cin >> c;
             }
             {
+                Coordinates C;
+                C.Row = row - 1;
+                C.Column = column - 1;
+                Stored.insert(C);
+                CurrentWord.enQueue(c);
                 Board[row - 1][column - 1] = c;
-                cout << Board[row-1][column-1] << endl;
                 cout << "Do you want Enter again(Y/N): ";
                 cin >> choice;
-                CurrentWord.enQueue(c);
 
                 if (choice == 'N')
                 {
-                    if(searchWord(t, Board))
+                    if (searchWord(t, Board, CompletedWords))
                     {
-                        for(int i =0; i<CurrentWord.getLength(); i++)
+                        int temp1 = CurrentWord.getLength();
+                        for (int i = 0; i < temp1; i++)
                         {
-                            Words[CurrentTurn].DeleteFront();
-                            Words[CurrentTurn].Insert(Inventory.getFront());
+                            Words[CurrentTurn - 1].Delete(CurrentWord.getFront());
+                            Words[CurrentTurn - 1].Insert(Inventory.getFront());
                             Inventory.deQueue();
-                            int Letter = CurrentWord.getFront() - 'A';
-                            Score[CurrentTurn] += Letter;
+                            int Letter = Points[int(CurrentWord.getFront() - 'A')];
+                            Score[CurrentTurn - 1] += Letter;
                             CurrentWord.deQueue();
                         }
+                        break;
                     }
                     else
                     {
                         choice = 'Y';
-                        cout << "The word Entered is not in the Dictionary Please try another word."<<endl;
-                        for(int i =0; i<CurrentWord.getLength(); i++)
+                        cout << "The word Entered is not in the Dictionary Please try another word." << endl;
+                        int temp1 = CurrentWord.getLength();
+                        Stored.Display();
+                        for (int i = 0; i < temp1; i++)
                         {
+                            Coordinates temp = Stored.getTop();
+                            Stored.pop();
+                            Board[temp.Row][temp.Column] = ' ';
                             CurrentWord.deQueue();
                         }
+                        for (int i = 0; i < 15; i++)
+                        {
+                            for (int j = 0; j < 15; j++)
+                            {
+                                cout << "| " << Board[i][j] << " ";
+                            }
+                            cout << "|" << endl;
+                        }
                     }
-                    break;
                 }
-                
             }
-
         }
-        cout << Score[CurrentTurn] << endl;
+        cout << Score[CurrentTurn - 1] << endl;
         for (int i = 0; i < 15; i++)
         {
             for (int j = 0; j < 15; j++)
@@ -184,5 +247,20 @@ int main()
             }
             cout << "|" << endl;
         }
+        if(Inventory.isEmpty())
+        {
+            break;
+        }
     }
+    int max = 0;
+    int Winner  = 0;
+    for(int i =0; i<players; i++)
+    {
+        if(Score[i] > max)
+        {
+            max = Score[i];
+            Winner = i;
+        }
+    }
+    cout << "Winner is: "<<Winner + 1 <<endl;
 }

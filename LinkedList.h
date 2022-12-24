@@ -60,6 +60,37 @@ public:
         }
         return false;
     }
+    void Delete(T value)
+    {
+        Node *temp = head;
+        while(temp != NULL)
+        {
+            if(head->value == value)
+            {
+                head = head->next;
+                return;
+            }
+            if(temp->next->value == value)
+            {
+                temp->next = temp->next->next;
+                return;
+            }
+            temp = temp->next;
+        }
+    }
+    Node searchNode(T Value)
+    {
+        Node *temp = head;
+        while(temp != NULL)
+        {
+            if(temp->value == Value)
+            {
+                return temp;
+            }
+            temp = temp->next;
+        }
+        return NULL;
+    }
     T showFront()
     {
         return head->value;

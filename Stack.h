@@ -21,12 +21,15 @@ public:
     {
         Node *newPtr = new Node;
         newPtr->data = Value;
+        newPtr->next = NULL;
         if(top == NULL)
         {
-            newPtr->next = NULL;
+            // newPtr->next = NULL;
             top = newPtr;
+            return;
         }
         newPtr->next = top;
+        // top->next  = NULL;
         top = newPtr;
     }
     void pop()
@@ -36,5 +39,15 @@ public:
     T getTop()
     {
         return top->data;
+    }
+    void Display()
+    {
+        Node *temp = top;
+        while(temp != NULL)
+        {
+            temp->data.display();
+            // cout << temp->data<<endl;
+            temp = temp->next;
+        }
     }
 };

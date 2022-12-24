@@ -84,7 +84,10 @@ public:
         }
         return;
     }
-
+    void Insert(string word)
+    {
+        insert(root, word);
+    }
     void check()
     {
         int found = 0;
