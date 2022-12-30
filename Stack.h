@@ -10,7 +10,7 @@ private:
         T data;
         Node *next;
     };
-    Node *top;      //Pointer to the top element of a stack
+    Node *top;     //Pointer to the top element of a stack
 
 public:
     //Initially set the empty stack parameters
@@ -43,7 +43,7 @@ public:
     {
         return top->data;
     }
-    //Function to display stack
+    //Function to display   stack
     void Display()
     {
         Node *temp = top;
@@ -51,7 +51,7 @@ public:
         {
             // temp->data.display();
             // cout << temp->data<<endl;
-            temp = temp->next;
+            temp =temp->next;
         }
     }
 };

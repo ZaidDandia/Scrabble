@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-template <typename T>
+template <typename T> // a template variable so that this file can be used for any data type in the future 
 class LinkedList
 {
 private:
@@ -60,15 +60,15 @@ public:
             }
             temp = temp->next;
         }
-        return false;         //Value is NOT found
+        return false;         // Value is NOT found
     }
     }
-    void Delete(T value)     //Function to delete a node from list
+    void Delete(T value)     // Function to delete a node from list
     {
         Node *temp = head;
         while(temp != NULL)
         {
-            if(head->value == value)       //Value to delete is at head
+            if(head->value == value)       // Value to delete is at head
             {
                 head = head->next;
                 return;
@@ -81,7 +81,7 @@ public:
             temp = temp->next;
         }
     }
-    Node searchNode(T Value)        //Searching the value of node
+    Node searchNode(T Value)        // Searching the value of node
     {
         Node *temp = head;
         while(temp != NULL)
@@ -98,7 +98,7 @@ public:
     {
         return head->value;
     }
-    void Display()        //Displaying linked list nodes
+    void Display()   // Displaying linked list nodes
     {
         Node *temp = head;
         while(temp != NULL)

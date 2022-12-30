@@ -72,10 +72,10 @@ public:
         }
         cout << endl;
     }
-     //Funtion to find if the Queue is Empty or NOT
+     //Funtion to find if the Queue is Empty  or NOT
     bool isEmpty()
     {
-        if(front == NULL)  //The Queue is Empty
+        if(front == NULL) //The Queue is Empty
         {
             return true;
         }
