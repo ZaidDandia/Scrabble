@@ -10,19 +10,21 @@ private:
         T data;
         Node *next;
     };
-    Node *top;
+    Node *top;      //Pointer to the top element of a stack
 
 public:
-    Stack()
+    //Initially set the empty stack parameters
+    Stack()                          //Counstructor
     {
         top = NULL;
     }
+    //Function to insert data into stack
     void insert(T Value)
     {
         Node *newPtr = new Node;
         newPtr->data = Value;
         newPtr->next = NULL;
-        if(top == NULL)
+        if(top == NULL)    //If the stack is empty
         {
             // newPtr->next = NULL;
             top = newPtr;
@@ -32,6 +34,7 @@ public:
         // top->next  = NULL;
         top = newPtr;
     }
+    //Function to remove data from top of the stack
     void pop()
     {
         top = top->next;
@@ -40,6 +43,7 @@ public:
     {
         return top->data;
     }
+    //Function to display stack
     void Display()
     {
         Node *temp = top;

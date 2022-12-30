@@ -10,21 +10,23 @@ private:
     struct Node
     {
         T value;
-        Node *next;
+        Node *next;  //Pointer for next node of the linked list
     };
-    Node *head;
+    Node *head;    //Pointer to the starting node of the list
+
 
 public:
-    LinkedList()
+    //Initially set the empty list parameters
+    LinkedList()          //Counstructor
     {
         head = NULL;
     }
-    void Insert(T Value)
+    void Insert(T Value)                  //Function to insert nodes in a list
     {
-        Node *newPtr = new Node;
-        if(head == NULL)
+        Node *newPtr = new Node;          //Create new node to be added
+        if(head == NULL)                  //If initially the list is empty
         {
-            newPtr->value = Value;
+            newPtr->value = Value;         //Assign a value
             newPtr->next = NULL;
             head = newPtr;
             return;
@@ -36,10 +38,10 @@ public:
         }
         newPtr->value = Value;
         newPtr->next = NULL;
-        temp->next = newPtr;
+        temp->next = newPtr;              //Temp next pointer is updated as new node
         return;
-    }
-    T DeleteFront()
+    } 
+    T DeleteFront()              //Function to delete from the front of linked list
     {
         Node *temp = head;
         T val = temp->value;
@@ -47,25 +49,26 @@ public:
         delete temp;
         return val;
     }
-    bool search(T Value)
+    bool search(T Value)      //Funtion to search value in a linked list
     {
         Node *temp = head;
         while(temp != NULL)
         {
-            if(temp->value == Value)
+            if(temp->value == Value)       //When head node value becomes equal to the value to search
             {
-                return true;
+                return true;          //Value is found
             }
             temp = temp->next;
         }
-        return false;
+        return false;         //Value is NOT found
     }
-    void Delete(T value)
+    }
+    void Delete(T value)     //Function to delete a node from list
     {
         Node *temp = head;
         while(temp != NULL)
         {
-            if(head->value == value)
+            if(head->value == value)       //Value to delete is at head
             {
                 head = head->next;
                 return;
@@ -78,7 +81,7 @@ public:
             temp = temp->next;
         }
     }
-    Node searchNode(T Value)
+    Node searchNode(T Value)        //Searching the value of node
     {
         Node *temp = head;
         while(temp != NULL)
@@ -95,7 +98,7 @@ public:
     {
         return head->value;
     }
-    void Display()
+    void Display()        //Displaying linked list nodes
     {
         Node *temp = head;
         while(temp != NULL)
