@@ -10,18 +10,18 @@ using namespace std;
 #include "Queue.h"
 #include "Stack.h"
 
-struct Coordinates
+struct Coordinates  // a structure for coordinates of a charter on the scrrable board 
 {
     int Row;
     int Column;
 };
-bool searchWord(Trie t, char arr[15][15], Trie C)
-{
+bool searchWord(Trie t, char arr[15][15], Trie C) //it searches the entred string or word in the board and compare if it is
+{                                                 //valid or not by searching it in library of word of a scrabble game
     bool found = false;
     bool already = false;
     t.initialise();
 
-    // horizontal right
+    // this searches for  the word in horizontal fashion so that points can be alloted and a proper word can be accepted 
     for (int i = 0; i < 15; i++)
     {
         for (int j = 0; j < 15; j++)
@@ -35,7 +35,7 @@ bool searchWord(Trie t, char arr[15][15], Trie C)
                 {
                     continue;
                 }
-                if (t.searchString(temp))
+                if (t.searchString(temp))// check if string sexit in library of scrabble and complete words as well
                 {
                     if (!C.searchString(temp))
                     {
@@ -50,6 +50,7 @@ bool searchWord(Trie t, char arr[15][15], Trie C)
             }
         }
     }
+    // this searches for  the word in vertical fashion so that points can be alloted and a proper word can be accepted
     for (int j = 0; j < 15; j++)
     {
         for (int i = 0; i < 15; i++)
@@ -63,7 +64,7 @@ bool searchWord(Trie t, char arr[15][15], Trie C)
                 {
                     continue;
                 }
-                if (t.searchString(temp))
+                if (t.searchString(temp))  // check if string sexit in library of scrabble and complete words as well
                 {
                     if (!C.searchString(temp))
                     {
@@ -79,31 +80,37 @@ bool searchWord(Trie t, char arr[15][15], Trie C)
     }
     return found;
 }
-class Scrabble
+class Scrabble  // class that holds all the functions regarding the gamme tthat are requiered to play the game
 {
 private:
-    Trie t;
-    Trie CompletedWords;
-    Queue<char> Inventory;
-    int players;
+    Trie t; //to store all the library of scrabble
+    Trie CompletedWords; // to  store all the enterded complete words on the board
+    Queue<char> Inventory; // a queue that is used to mange inventory of a player
+    int players;// stores no of players 
     char array[101] = {'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'B', 'B', 'C', 'C', 'D', 'D', 'D', 'D', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'F', 'F', 'F', 'G', 'G', 'G', 'H', 'H', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'J', 'K', 'L', 'L', 'L', 'L', 'M', 'M', 'N', 'N', 'N', 'N', 'N', 'N', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'P', 'P', 'Q', 'Q', 'R', 'R', 'R', 'R', 'R', 'R', 'S', 'S', 'S', 'S', 'T', 'T', 'T', 'T', 'T', 'T', 'U', 'U', 'U', 'U', 'V', 'V', 'W', 'W', 'X', 'Y', 'Y', 'Z', 'Z'};
-    int Points[26] = {1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10};
-    LinkedList<int> l;
-    LinkedList<char> *Words = new LinkedList<char>[players];
-    char Board[15][15];
-    int *Score;
-    int *turn;
+    //this array stores full inventory of the scrrable
+
+    int Points[26] = {1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10}; // every alphabet has a unique score this
+    //array has all the scores stored to the equivalent alphabets 
+
+    LinkedList<int> l; // maintains the user turs and sequence of playing
+    LinkedList<char> *Words = new LinkedList<char>[players];// initalizing inventory of all the players that they will  have access off during the game 
+    char Board[15][15]; // a 2-D array used to make the scrable board 
+    int *Score;//keep track of score
+    int *turn;// keep track of the turn 
 
 public:
-    Scrabble()
+    Scrabble() // constructor 
     {
-        t.initialise();
+        t.initialise();// initialize the tries to work with 
         srand(time(0));
-        random_shuffle(array, array + 100);
-        for (int i = 0; i < 100; i++)
+        random_shuffle(array, array + 100);// randomly shuffles the array of elements 101 so  that it can be distributed among users 
+        for (int i = 0; i < 100; i++) // it moves the whole inventory to the queue for t use in the game
         {
             Inventory.enQueue(array[i]);
         }
+
+        // this makes us enter number of players in the game where we makle sure they are between 2-4 players at a time not more or less than that 
         cout << "Enter the number of players: ";
         cin >> players;
         while (players > 4 || players <= 1)
@@ -111,15 +118,16 @@ public:
             cout << "Please Enter a number between 2 and 4: ";
             cin >> players;
         }
-        Score = new int[players];
-        for (int i = 0; i < players; i++)
+        Score = new int[players]; // an array that will maintain score of the players 
+        for (int i = 0; i < players; i++)// initialize the score with 0
         {
             Score[i] = 0;
         }
+
         int min = 1000;
         int position = 0;
-        turn = new int[players];
-        for (int i = 0; i < players; i++)
+        turn = new int[players]; //initailize an array to maintain turns 
+        for (int i = 0; i < players; i++)  // thhis randomly selects a player to play the first turn 
         {
             int temp = rand() % 26;
             turn[i] = temp;
@@ -131,7 +139,7 @@ public:
             }
         }
         cout << "Player " << position << " plays first" << endl;
-        l.Insert(position);
+        l.Insert(position); // makes user enter position where they want to enter the alphabet 
         for (int i = 0; i < players; i++)
         {
             for (int j = 0; j < 7; j++)
@@ -155,7 +163,7 @@ public:
             }
         }
     }
-    void PrintBoard()
+    void PrintBoard() // prints the board so that it all can be displaed after user makes an input or not 
     {
         for (int i = 0; i < 15; i++)
         {
@@ -182,7 +190,7 @@ public:
             {
                 cout << "Player " << CurrentTurn << " turn: " << endl;
                 cout << "Your Word Inventory: ";
-                Words[CurrentTurn - 1].Display();
+                Words[CurrentTurn - 1].Display(); // currentTurns tells whoes turn it is 
                 PrintBoard();
                 cout << "Enter row: ";
                 cin >> row;
@@ -192,16 +200,16 @@ public:
 
                 while (Board[row - 1][column - 1] != ' ')
                 {
-                    cout << "Already Full. Try again" << endl;
+                    cout << "Already Full. Try again" << endl; // if row or column is all ready full we cant enter anything at that point
                     cout << "Enter row: ";
-                    cin >> row;
+                    cin >> row;                                //so we re enter.
                     cout << "Enter column: ";
                     cin >> column;
                     cout << "Enter the Letter: ";
                     cin >> c;
                 }
-                while (!Words[CurrentTurn - 1].search(c))
-                {
+                while (!Words[CurrentTurn - 1].search(c)) // we search if te word entered by the user exists in the scrrable library or not 
+                {                                         //if not user enters againn and the first entry is nullified
                     cout << "Letter not in your inventory! Please try again." << endl;
                     cout << "Enter the Letter : " << endl;
                     cin >> c;
@@ -216,7 +224,7 @@ public:
                     cout << "Do you want Enter again(Y/N): ";
                     cin >> choice;
 
-                    if (choice == 'N')
+                    if (choice == 'N') // this means user doesnt want to enter any other charcter so  that word is complete to check if present or not
                     {
                         if (searchWord(t, Board, CompletedWords))
                         {
@@ -232,9 +240,9 @@ public:
                             }
                             break;
                         }
-                        else
+                         // if word is not found in the scrabble library
                         {
-                            choice = 'Y';
+                            choice = 'Y'; // error message is printed
                             cout << "The word Entered is not in the Dictionary Please try another word." << endl;
                             int temp1 = CurrentWord.getLength();
                             Stored.Display();
@@ -251,7 +259,7 @@ public:
                 }
                 cout << "Press Any Key to continue...." << endl;
                 cin.ignore().get();
-                system("clear");
+                system("clear");// clears the console so  that we dont move down on the console every time a new round is  started
             }
             cout << "Score: " << Score[CurrentTurn - 1] << endl;
             PrintBoard();
@@ -262,12 +270,12 @@ public:
         }
         int max = 0;
         int Winner = 0;
-        for (int i = 0; i < players; i++)
+        for (int i = 0; i < players; i++) // finding the winner of the game 
         {
             if (Score[i] > max)
             {
                 max = Score[i];
-                Winner = i;
+                Winner = i;// winner 
             }
         }
         cout << "Winner is: " << Winner + 1 << endl;
@@ -275,6 +283,6 @@ public:
 };
 int main()
 {
-    Scrabble S;
-    S.playGame();
+    Scrabble S; // decleraation of a class in main function
+    S.playGame();// function to start playing the game 
 }
