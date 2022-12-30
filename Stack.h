@@ -45,7 +45,7 @@ public:
         Node *temp = top;
         while(temp != NULL)
         {
-            temp->data.display();
+            // temp->data.display();
             // cout << temp->data<<endl;
             temp = temp->next;
         }
