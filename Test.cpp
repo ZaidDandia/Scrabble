@@ -3,6 +3,7 @@
 #include <random>
 #include <time.h>
 #include <algorithm>
+#include <cstdlib>
 using namespace std;
 #include "Tries.h"
 #include "LinkedList.h"
@@ -90,8 +91,9 @@ private:
     LinkedList<int> l;
     LinkedList<char> *Words = new LinkedList<char>[players];
     char Board[15][15];
-    int *Score = new int[players];
+    int *Score;
     int *turn;
+
 public:
     Scrabble()
     {
@@ -109,8 +111,11 @@ public:
             cout << "Please Enter a number between 2 and 4: ";
             cin >> players;
         }
-        Score = {0};
-        
+        Score = new int[players];
+        for (int i = 0; i < players; i++)
+        {
+            Score[i] = 0;
+        }
         int min = 1000;
         int position = 0;
         turn = new int[players];
@@ -170,14 +175,15 @@ public:
             int CurrentTurn = l.showFront();
             l.DeleteFront();
             l.Insert(CurrentTurn);
-            cout << "Player " << CurrentTurn << " turn: " << endl;
-            cout << "Your Word Inventory: ";
-            Words[CurrentTurn - 1].Display();
             int row, column;
             char c;
             Stack<Coordinates> Stored;
             while (1)
             {
+                cout << "Player " << CurrentTurn << " turn: " << endl;
+                cout << "Your Word Inventory: ";
+                Words[CurrentTurn - 1].Display();
+                PrintBoard();
                 cout << "Enter row: ";
                 cin >> row;
                 cout << "Enter Column: ";
@@ -243,8 +249,11 @@ public:
                         }
                     }
                 }
+                cout << "Press Any Key to continue...." << endl;
+                cin.ignore().get();
+                system("clear");
             }
-            cout <<"Score: "<<Score[CurrentTurn - 1] << endl;
+            cout << "Score: " << Score[CurrentTurn - 1] << endl;
             PrintBoard();
             if (Inventory.isEmpty())
             {
