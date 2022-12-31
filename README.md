@@ -8,7 +8,7 @@ Command to run the project:
 > g++ -o Screbble.exe Scrabble.cpp\
 > ./Scrabble.exe
 
-##Data Structures used in the project:
+#Data Structures used in the project:
 >Queue\
 >Linked List\
 >Tries\
