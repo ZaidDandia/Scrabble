@@ -3,7 +3,7 @@
 University: Ghulam Ishaq Khan Institute of Engineering Sciences and Technology\
 Course: Data Structures and Algorithms (Lab)\
 Course Instructor: Usama Arshad\
-Group Members: Zaid Dandia (2021719), Eman Anjum (2021148), Ahmed Ali Abid (2021065)\
+Group Members: Zaid Dandia (2021719), Eman Anjum (2021148), Ahmed Ali Abid (2021065)
 
 ## Command to run the project:\
 > g++ -o Screbble.exe Scrabble.cpp\
