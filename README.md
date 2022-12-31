@@ -14,6 +14,7 @@ Data Structures used in the project:
 >Tries\
 >Stack\
 General Description on the Project:\
+...
 >The following project is on a game called Scrabble by using different data structures.
 The data structures which have been used for making this game are Linked List, Stacks, Queues, Arrays, and Tries. There is a library which contains the inventory 
 of all those words which are appectable in our game and for that we have a words.txt file. Now, this txt file have been stored in our Tries. Queue data structure 
