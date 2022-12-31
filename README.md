@@ -5,8 +5,8 @@ Course: Data Structures and Algorithms (Lab)\
 Course Instructor: Usama Arshad\
 Group Members: Zaid Dandia (2021719), Eman Anjum (2021148), Ahmed Ali Abid (2021065)
 
-## Command to run the project:\
-> g++ -o Screbble.exe Scrabble.cpp\
+## Command to run the project:
+> g++ -o Scrabble.exe Scrabble.cpp\
 > ./Scrabble.exe
 
 ## Data Structures used in the project:
