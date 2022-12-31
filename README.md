@@ -5,7 +5,7 @@ Group Members: Zaid Dandia (2021719), Eman Anjum (2021148), Ahmed Ali Abid (2021
 
 Command to run the project:
 ...
->g++ -o Screbble.exe Scrabble.cpp
+>g++ -o Screbble.exe Scrabble.cpp/n
 >./Scrabble.exe
 ...
 General Description on the Project: The following project is on a game called Scrabble by using different data structures.
